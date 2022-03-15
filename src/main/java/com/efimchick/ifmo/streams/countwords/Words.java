@@ -26,10 +26,11 @@ public class Words {
 
     private String mapToString(Map<String, Integer> map) {
         LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
-        map.entrySet().stream().sorted(Map.Entry.comparingByKey())
+        map.entrySet().stream().filter(x -> x.getValue() >= MINIMAL_WORD_FREQUENCY)
+                .sorted(Map.Entry.comparingByKey())
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-        return sortedMap.entrySet().stream().filter(x -> x.getValue() >= MINIMAL_WORD_FREQUENCY)
+        return sortedMap.entrySet().stream()
                 .map(key -> key.getKey() + " - " + key.getValue())
                 .collect(Collectors.joining("\n"));
     }
